@@ -1,25 +1,28 @@
-package edu.nju.flag.base.entity;
+package edu.nju.flag.base.vo;
 
+import edu.nju.flag.base.entity.Comment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.Id;
 
 import java.util.Date;
 import java.util.UUID;
 
 /**
- * 评论实体类
+ * CommentVO
+ *
  * @author xuan
- * @create 2018-12-09 22:42
- **/
+ * @date 2018/12/10
+ */
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-public class Comment {
+public class CommentVO {
 
     @Id
     private UUID id;
@@ -55,6 +58,8 @@ public class Comment {
     private UUID toCommentId;
 
 
-
+    public CommentVO(Comment comment){
+        BeanUtils.copyProperties(comment, this);
+    }
 
 }

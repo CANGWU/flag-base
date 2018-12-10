@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * flag实体类
@@ -21,7 +22,7 @@ public class Flag {
 
 
     @Id
-    private String id;
+    private UUID id;
 
     /**
      * flag类型

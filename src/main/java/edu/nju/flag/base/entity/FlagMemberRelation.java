@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
+import java.util.UUID;
+
 /**
  * flag与用户关系实体类
  * @author xuan
@@ -19,12 +21,12 @@ import org.springframework.data.annotation.Id;
 public class FlagMemberRelation {
 
     @Id
-    private String id;
+    private UUID id;
 
     /**
      * 关联的flag Id
      */
-    private String flagId;
+    private UUID flagId;
 
     /**
      * 用户Id
@@ -40,6 +42,11 @@ public class FlagMemberRelation {
      * 是否参与
      */
     private Boolean isJoin;
+
+    /**
+     * 是否点赞
+     */
+    private Boolean isPraise;
 
     /**
      * flag状态

@@ -1,0 +1,15 @@
+
+
+server:
+  port: 8080
+spring:
+  application:
+    name: flag-base
+  data:
+    mongodb:
+      host: 47.107.108.68
+      port: 27017
+      database: flag-base
+
+
+

@@ -24,12 +24,12 @@ import java.util.UUID;
 @Builder
 public class CommentVO {
 
-    private UUID id;
+    private String id;
 
     /**
      * 评论的flag Id
      */
-    private UUID flagId;
+    private String flagId;
 
     /**
      * 评论人Id
@@ -54,7 +54,7 @@ public class CommentVO {
     /**
      * 关联的评论Id
      */
-    private UUID toCommentId;
+    private String toCommentId;
 
 
     public CommentVO(Comment comment){

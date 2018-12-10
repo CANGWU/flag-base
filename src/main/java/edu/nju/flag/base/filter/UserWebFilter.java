@@ -1,8 +1,11 @@
 package edu.nju.flag.base.filter;
 
+import edu.nju.flag.base.constants.FlagBaseHeaders;
 import edu.nju.flag.base.repository.UserRepository;
+import org.omg.Messaging.SYNC_WITH_TRANSPORT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
@@ -23,7 +26,7 @@ import java.net.URI;
  */
 
 @Component
-@Order(1)
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class UserWebFilter implements WebFilter {
 
     @Autowired
@@ -45,13 +48,11 @@ public class UserWebFilter implements WebFilter {
 
         if(!uri.getPath().contains(REGISTER_PATH)){
 
-            String userId = request.getHeaders().getFirst("Authorization");
+            String userId = request.getHeaders().getFirst(FlagBaseHeaders.USER_ID_IN_HEADER);
 
             if(userId == null || !userRepository.existsById(userId)){
-                return Mono.empty();
+                return Mono.error(new RuntimeException("Need user authorization!"));
             }
-
-            request.getHeaders().add("userId", userId);
 
         }
 

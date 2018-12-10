@@ -18,6 +18,8 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 import java.util.UUID;
 
+import static edu.nju.flag.base.constants.FlagBaseHeaders.USER_ID_IN_HEADER;
+
 /**
  * ReactiveCommentController
  *
@@ -34,7 +36,7 @@ public class ReactiveCommentController {
 
 
     @PostMapping("/add")
-    public Mono<CommentVO> addComment(@RequestHeader String userId, @RequestBody AddCommentForm addCommentForm){
+    public Mono<CommentVO> addComment(@RequestHeader(USER_ID_IN_HEADER)String userId, @RequestBody AddCommentForm addCommentForm){
 
         List<ConstraintViolation> ret = OvalValidatorUtils.validate(addCommentForm);
         if(!CollectionUtils.isEmpty(ret)){
@@ -44,8 +46,8 @@ public class ReactiveCommentController {
     }
 
 
-    @DeleteMapping("/delete")
-    public Mono<Boolean> deleteComment(@RequestHeader String userId, @RequestBody String commentId){
+    @DeleteMapping("/delete/{commentId}")
+    public Mono<Boolean> deleteComment(@RequestHeader(USER_ID_IN_HEADER) String userId, @PathVariable("commentId") String commentId){
         return commentService.deleteComment(userId, commentId);
     }
 
@@ -53,7 +55,7 @@ public class ReactiveCommentController {
     @PostMapping("/list/{flagId}")
     public Flux<CommentVO> queryPageCommentByFlagId(@PathVariable("flagId") String flagId, @RequestBody Pageable pageable){
         return commentService.queryPageCommentByFlagId(flagId,
-                PageRequest.of(pageable.getPageSize(), pageable.getPageNumber(), pageable.getSort() == null ? Sort.by()));
+                PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), pageable.getSort() == null ? Sort.by(Sort.Order.desc("commentTime")): pageable.getSort()));
 
     }
 

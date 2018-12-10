@@ -5,8 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-import java.util.Optional;
-import java.util.UUID;
 
 /**
  * @author xuan
@@ -22,6 +20,8 @@ public interface CommentRepository extends PagingAndSortingRepository<Comment, S
      * @return
      */
     Page<Comment> findCommentsByFlagId(String flagId, Pageable pageable);
+
+
 
 
     /**

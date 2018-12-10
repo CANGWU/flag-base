@@ -5,10 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.sf.oval.constraint.NotBlank;
-import net.sf.oval.constraint.NotEmpty;
 import net.sf.oval.constraint.NotNull;
 
-import java.util.UUID;
 
 /**
  * AddCommentForm
@@ -28,9 +26,9 @@ public class AddCommentForm {
     private String content;
 
     @NotNull
-    private UUID flagId;
+    private String flagId;
 
-    private UUID toCommentId;
+    private String toCommentId;
 
 
 }

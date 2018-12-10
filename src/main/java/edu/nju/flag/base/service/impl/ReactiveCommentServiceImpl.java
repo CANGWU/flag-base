@@ -7,6 +7,7 @@ import edu.nju.flag.base.service.CommentService;
 import edu.nju.flag.base.vo.CommentVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -37,7 +38,7 @@ public class ReactiveCommentServiceImpl implements CommentService{
 
 
     @Override
-    public Mono<CommentVO> addComment(String userId, UUID flagId, String content, UUID toCommentId) {
+    public Mono<CommentVO> addComment(String userId, String flagId, String content, String toCommentId) {
 
         // 确认flag是否存在
         if(!flagRepository.existsById(flagId)){
@@ -46,7 +47,6 @@ public class ReactiveCommentServiceImpl implements CommentService{
         }
 
         Comment comment = Comment.builder()
-                .id(UUID.randomUUID())
                 .flagId(flagId)
                 .userId(userId)
                 .commentTime(new Date())
@@ -59,18 +59,19 @@ public class ReactiveCommentServiceImpl implements CommentService{
     }
 
     @Override
-    public Mono<CommentVO> deleteComment(String userId, UUID commentId) {
-        return Mono.justOrEmpty(new CommentVO(commentRepository.deleteCommentByIdAndUserId(commentId, userId)));
+    public Mono<Boolean> deleteComment(String userId, String commentId) {
+        return Mono.justOrEmpty(commentRepository.deleteCommentByIdAndUserId(commentId, userId) > 0L);
     }
 
     @Override
-    public Flux<CommentVO> queryPageCommentByFlagId(UUID flagId, Pageable pageable) {
+    public Flux<CommentVO> queryPageCommentByFlagId(String flagId, Pageable pageable) {
 
         // 确认flag是否存在
         if(!flagRepository.existsById(flagId)){
             log.error("flag {} is not exist");
             return Flux.error(new RuntimeException("Not such flag!"));
         }
+
 
         return Flux.fromIterable(commentRepository.findCommentsByFlagId(flagId, pageable).map(CommentVO::new));
     }

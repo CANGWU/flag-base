@@ -12,7 +12,7 @@ import java.util.UUID;
  * @author xuan
  * @create 2018-12-09 23:01
  **/
-public interface CommentRepository extends PagingAndSortingRepository<Comment, UUID> {
+public interface CommentRepository extends PagingAndSortingRepository<Comment, String> {
 
 
     /**
@@ -21,7 +21,7 @@ public interface CommentRepository extends PagingAndSortingRepository<Comment, U
      * @param pageable
      * @return
      */
-    Page<Comment> findCommentsByFlagId(UUID flagId, Pageable pageable);
+    Page<Comment> findCommentsByFlagId(String flagId, Pageable pageable);
 
 
     /**
@@ -30,7 +30,7 @@ public interface CommentRepository extends PagingAndSortingRepository<Comment, U
      * @param userId
      * @return
      */
-    Comment deleteCommentByIdAndUserId(UUID id, String userId);
+    Long deleteCommentByIdAndUserId(String id, String userId);
 
 
 }

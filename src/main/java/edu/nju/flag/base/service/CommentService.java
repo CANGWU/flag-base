@@ -24,7 +24,7 @@ public interface CommentService {
      * @param toCommentId
      * @return
      */
-    Mono<CommentVO> addComment(String userId, UUID flagId, String content, UUID toCommentId);
+    Mono<CommentVO> addComment(String userId, String flagId, String content, String toCommentId);
 
 
     /**
@@ -33,7 +33,7 @@ public interface CommentService {
      * @param commentId
      * @return
      */
-    Mono<CommentVO> deleteComment(String userId, UUID commentId);
+    Mono<Boolean> deleteComment(String userId, String commentId);
 
 
     /**
@@ -42,7 +42,7 @@ public interface CommentService {
      * @param pageable
      * @return
      */
-    Flux<CommentVO> queryPageCommentByFlagId(UUID flagId, Pageable pageable);
+    Flux<CommentVO> queryPageCommentByFlagId(String flagId, Pageable pageable);
 
 
 }

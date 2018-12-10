@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -21,12 +22,12 @@ import java.util.UUID;
 public class FlagMemberRelation {
 
     @Id
-    private UUID id;
+    private String id;
 
     /**
      * 关联的flag Id
      */
-    private UUID flagId;
+    private String flagId;
 
     /**
      * 用户Id
@@ -49,10 +50,9 @@ public class FlagMemberRelation {
     private Boolean isPraise;
 
     /**
-     * flag状态
-     * {@link MyFlagStatus}
+     * 用户任务执行状态
      */
-    private MyFlagStatus myStatus;
+    private List<TaskStatus> myTaskStatus;
 
 
 }

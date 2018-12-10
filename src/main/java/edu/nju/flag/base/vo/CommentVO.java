@@ -24,7 +24,6 @@ import java.util.UUID;
 @Builder
 public class CommentVO {
 
-    @Id
     private UUID id;
 
     /**

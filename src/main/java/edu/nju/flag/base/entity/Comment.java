@@ -22,12 +22,12 @@ import java.util.UUID;
 public class Comment {
 
     @Id
-    private UUID id;
+    private String id;
 
     /**
      * 评论的flag Id
      */
-    private UUID flagId;
+    private String  flagId;
 
     /**
      * 评论人Id
@@ -52,7 +52,7 @@ public class Comment {
     /**
      * 关联的评论Id
      */
-    private UUID toCommentId;
+    private String toCommentId;
 
 
 

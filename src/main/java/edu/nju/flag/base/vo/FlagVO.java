@@ -1,4 +1,4 @@
-package edu.nju.flag.base.entity;
+package edu.nju.flag.base.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,28 +7,22 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 /**
- * flag实体类
+ * FlagVO
+ *
  * @author xuan
- * @create 2018-12-09 22:25
- **/
+ * @date 2018/12/10
+ */
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Flag {
+public class FlagVO {
 
-    @Id
-    private String id;
-
-
-    /**
-     * 创建Id
-     */
-    private String userId;
+    private UUID id;
 
     /**
      * flag类型
@@ -91,9 +85,11 @@ public class Flag {
      */
     private Integer followNum;
 
+
     /**
-     * flag下的任务列表
+     *
      */
-    private List<Task> tasks;
+
+
 
 }

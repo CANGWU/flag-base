@@ -9,7 +9,7 @@ import java.util.UUID;
  * @author xuan
  * @create 2018-12-09 22:59
  **/
-public interface FlagRepository extends PagingAndSortingRepository<Flag, UUID> {
+public interface FlagRepository extends PagingAndSortingRepository<Flag, String> {
 
 
 

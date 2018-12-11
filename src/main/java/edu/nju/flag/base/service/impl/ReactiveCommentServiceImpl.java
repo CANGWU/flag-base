@@ -67,13 +67,19 @@ public class ReactiveCommentServiceImpl implements CommentService{
     }
 
     @Override
-    public Flux<CommentVO> queryPageCommentByFlagId(String flagId, Pageable pageable) {
+    public Mono<Page<CommentVO>> queryPageCommentByFlagId(String flagId, Pageable pageable) {
 
         // 确认flag是否存在
         if(!flagRepository.existsById(flagId)){
             log.error("flag {} is not exist");
-            return Flux.error(new RuntimeException("Not such flag!"));
+            return Mono.error(new RuntimeException("Not such flag!"));
         }
-        return Flux.fromIterable(commentRepository.findCommentsByFlagId(flagId, pageable).map(CommentVO::new));
+        return Mono.justOrEmpty(commentRepository.findCommentsByFlagId(flagId, pageable).map(CommentVO::new));
+    }
+
+    @Override
+    public Mono<Boolean> removeComment(String commentId) {
+        commentRepository.deleteById(commentId);
+        return Mono.justOrEmpty(Boolean.TRUE);
     }
 }

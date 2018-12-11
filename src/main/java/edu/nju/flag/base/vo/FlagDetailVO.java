@@ -1,28 +1,22 @@
 package edu.nju.flag.base.vo;
 
-import edu.nju.flag.base.entity.Task;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
 
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 /**
- * FlagVO
- *
  * @author xuan
- * @date 2018/12/10
- */
-
+ * @create 2018-12-11 20:06
+ **/
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class FlagVO {
+public class FlagDetailVO {
 
     private String id;
 
@@ -90,8 +84,5 @@ public class FlagVO {
     /**
      *
      */
-    private List<TaskVO> tasks;
-
-
-
+    private List<TaskDetailVO> tasks;
 }

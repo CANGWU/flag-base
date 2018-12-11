@@ -8,6 +8,7 @@ import edu.nju.flag.base.utils.OvalValidatorUtils;
 import edu.nju.flag.base.vo.CommentVO;
 import net.sf.oval.ConstraintViolation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.util.CollectionUtils;
@@ -53,7 +54,7 @@ public class ReactiveCommentController {
 
 
     @PostMapping("/list/{flagId}")
-    public Flux<CommentVO> queryPageCommentByFlagId(@PathVariable("flagId") String flagId, @RequestBody Pageable pageable){
+    public Mono<Page<CommentVO>> queryPageCommentByFlagId(@PathVariable("flagId") String flagId, @RequestBody Pageable pageable){
         return commentService.queryPageCommentByFlagId(flagId,
                 PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), pageable.getSort() == null ? Sort.by(Sort.Order.desc("commentTime")): pageable.getSort()));
 

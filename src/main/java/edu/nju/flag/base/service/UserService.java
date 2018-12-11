@@ -19,6 +19,13 @@ public interface UserService {
      */
     Mono<UserVO> register(String code);
 
+    /**
+     * 删除一个用户，管理员使用
+     * @param userId
+     * @return
+     */
+    Mono<Boolean> removeUser(String userId);
+
 
 
 }

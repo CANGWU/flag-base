@@ -9,9 +9,9 @@ import lombok.NoArgsConstructor;
  * @author xuan
  * @create 2018-12-11 20:51
  **/
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
+//@Builder
+//@AllArgsConstructor
+//@NoArgsConstructor
+//@Data
 public class CreateCommentForm {
 }

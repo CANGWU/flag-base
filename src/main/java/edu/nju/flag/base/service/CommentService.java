@@ -1,9 +1,8 @@
 package edu.nju.flag.base.service;
 
 import edu.nju.flag.base.vo.CommentVO;
+import edu.nju.flag.base.vo.PageableVO;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
@@ -43,7 +42,7 @@ public interface CommentService {
      * @param pageable
      * @return
      */
-    Mono<Page<CommentVO>> queryPageCommentByFlagId(String flagId, Pageable pageable);
+    Mono<Page<CommentVO>> queryPageCommentByFlagId(String flagId, PageableVO pageable);
 
     /**
      * 删除评论，管理员使用

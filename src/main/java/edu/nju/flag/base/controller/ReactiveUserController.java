@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/user")
-public class ReactivceUserController {
+public class ReactiveUserController {
 
     @Autowired
     UserService userService;

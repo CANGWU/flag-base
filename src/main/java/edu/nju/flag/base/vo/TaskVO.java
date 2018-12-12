@@ -1,9 +1,11 @@
 package edu.nju.flag.base.vo;
 
+import edu.nju.flag.base.entity.Task;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.BeanUtils;
 
 import java.util.Date;
 
@@ -34,4 +36,9 @@ public class TaskVO {
      * 创建时间
      */
     private Date createTime;
+
+    public TaskVO(Task task){
+        BeanUtils.copyProperties(task, this);
+    }
+
 }

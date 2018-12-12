@@ -1,12 +1,20 @@
 package edu.nju.flag.base.vo;
 
+import edu.nju.flag.base.entity.Flag;
+import edu.nju.flag.base.entity.FlagMemberRelation;
+import edu.nju.flag.base.entity.TaskStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.BeanUtils;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @author xuan
@@ -19,6 +27,9 @@ import java.util.List;
 public class FlagDetailVO {
 
     private String id;
+
+
+    private UserVO user;
 
     /**
      * flag类型
@@ -85,4 +96,33 @@ public class FlagDetailVO {
      *
      */
     private List<TaskDetailVO> tasks;
+
+    public FlagDetailVO(Flag flag, FlagMemberRelation flagMemberRelation) {
+
+
+        BeanUtils.copyProperties(flag, this, "tasks", "userId");
+
+        if(!CollectionUtils.isEmpty(flag.getTasks())){
+            this.tasks = flag.getTasks().stream().map(TaskDetailVO::new).collect(Collectors.toList());
+        }
+
+        if(flagMemberRelation != null && flagMemberRelation.getIsJoin()){
+
+            List<TaskStatus> taskStatuses = flagMemberRelation.getMyTaskStatus();
+
+            Map<String, TaskStatus> taskStatusMap = taskStatuses == null ? new HashMap<>() : taskStatuses.stream().collect(Collectors.toMap(TaskStatus::getTaskId, i -> i));
+
+            for(TaskDetailVO taskDetail : this.tasks){
+
+                TaskStatus taskStatus = taskStatusMap.get(taskDetail.getId());
+
+                TaskStatusVO taskStatusVO = taskStatus != null ? new TaskStatusVO(taskStatus) : new TaskStatusVO(taskDetail.getId(), edu.nju.flag.base.enums.TaskStatus.ONGOING.getType(), null);
+
+                taskDetail.setTaskStatus(taskStatusVO);
+            }
+
+
+
+        }
+    }
 }

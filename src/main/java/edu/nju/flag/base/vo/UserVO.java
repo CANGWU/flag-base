@@ -20,7 +20,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class UserVO {
 
-    private UUID id;
+    private String id;
 
     private String username;
 

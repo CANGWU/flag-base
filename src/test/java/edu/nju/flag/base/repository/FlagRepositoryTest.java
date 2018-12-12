@@ -71,6 +71,10 @@ public class FlagRepositoryTest {
 
 //        System.out.println(flag);
 
+        Iterable<Flag> flags = flagRepository.findAll();
+
+        System.out.println();
+
     }
 
 

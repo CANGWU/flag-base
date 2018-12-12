@@ -1,9 +1,11 @@
 package edu.nju.flag.base.vo;
 
+import edu.nju.flag.base.entity.TaskStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.BeanUtils;
 
 import java.util.Date;
 
@@ -23,6 +25,10 @@ public class TaskStatusVO {
     private Integer status;
 
     private Date finishTime;
+
+    public TaskStatusVO(TaskStatus taskStatus){
+        BeanUtils.copyProperties(taskStatus, this);
+    }
 
 
 }

@@ -3,8 +3,8 @@ package edu.nju.flag.base.service;
 import edu.nju.flag.base.vo.CreateFlagVO;
 import edu.nju.flag.base.vo.FlagDetailVO;
 import edu.nju.flag.base.vo.FlagVO;
+import edu.nju.flag.base.vo.PageableVO;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import reactor.core.publisher.Mono;
 
 /**
@@ -19,6 +19,7 @@ public interface FlagService {
      * 创建一个新的flag
      * @return
      * @param userId
+     * @param newFlag
      */
     Mono<FlagDetailVO> createFlag(String userId, CreateFlagVO newFlag);
 
@@ -26,16 +27,17 @@ public interface FlagService {
     /**
      * 分页根据title模糊搜索flag
      * @param title
+     * @param pageable
      * @return
      */
-    Mono<Page<FlagVO>> searchFlagByTitle(String title, Pageable pageable);
+    Mono<Page<FlagVO>> searchFlagByTitle(String title, PageableVO pageable);
 
     /**
      * 分页获取热门flag
      * @param pageable
      * @return
      */
-    Mono<Page<FlagVO>> queryPopularFlag(Pageable pageable);
+    Mono<Page<FlagVO>> queryPopularFlag(PageableVO pageable);
 
     /**
      * 分页获取我点赞的flag
@@ -43,8 +45,7 @@ public interface FlagService {
      * @param pageable
      * @return
      */
-    Mono<Page<FlagVO>> queryPraisedFlag(String userId, Pageable pageable);
-
+    Mono<Page<FlagVO>> queryPraisedFlag(String userId, PageableVO pageable);
 
     /**
      * 分页获取我参与的flag
@@ -52,7 +53,7 @@ public interface FlagService {
      * @param pageable
      * @return
      */
-    Mono<Page<FlagVO>> queryJoinedFlag(String userId, Pageable pageable);
+    Mono<Page<FlagVO>> queryJoinedFlag(String userId, PageableVO pageable);
 
     /**
      * 分页获取我关注的flag
@@ -60,15 +61,16 @@ public interface FlagService {
      * @param pageable
      * @return
      */
-    Mono<Page<FlagVO>> queryFollowedFlag(String userId, Pageable pageable);
+    Mono<Page<FlagVO>> queryFollowedFlag(String userId, PageableVO pageable);
 
 
     /**
      * 获取flag的详情
+     * @param userId
      * @param flagId
      * @return
      */
-    Mono<FlagDetailVO> queryFlagById(String flagId);
+    Mono<FlagDetailVO> queryFlagById(String userId, String flagId);
 
     /**
      * 关闭flag
@@ -86,6 +88,8 @@ public interface FlagService {
      * @return
      */
     Mono<Boolean> removeFlag(String flag);
+
+
 
 
 }

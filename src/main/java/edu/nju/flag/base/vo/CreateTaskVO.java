@@ -14,4 +14,19 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateTaskVO {
+
+    /**
+     * 任务描述
+     */
+    String description;
+
+    /**
+     * 任务类型
+     * {@link edu.nju.flag.base.enums.TaskType}
+     */
+    private Integer type;
+
+
+
+
 }

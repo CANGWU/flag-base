@@ -7,11 +7,13 @@ import edu.nju.flag.base.repository.CommentRepository;
 import edu.nju.flag.base.repository.FlagRepository;
 import edu.nju.flag.base.service.CommentService;
 import edu.nju.flag.base.vo.CommentVO;
+import edu.nju.flag.base.vo.PageableVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -67,14 +69,14 @@ public class ReactiveCommentServiceImpl implements CommentService{
     }
 
     @Override
-    public Mono<Page<CommentVO>> queryPageCommentByFlagId(String flagId, Pageable pageable) {
+    public Mono<Page<CommentVO>> queryPageCommentByFlagId(String flagId, PageableVO pageable) {
 
         // 确认flag是否存在
         if(!flagRepository.existsById(flagId)){
             log.error("flag {} is not exist");
             return Mono.error(new RuntimeException("Not such flag!"));
         }
-        return Mono.justOrEmpty(commentRepository.findCommentsByFlagId(flagId, pageable).map(CommentVO::new));
+        return Mono.justOrEmpty(commentRepository.findCommentsByFlagId(flagId, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), pageable.getSort() == null ? Sort.by(Sort.Order.desc("commentTime")): pageable.getSort())).map(CommentVO::new));
     }
 
     @Override

@@ -1,15 +1,19 @@
 package edu.nju.flag.base.vo;
 
+import edu.nju.flag.base.entity.Flag;
 import edu.nju.flag.base.entity.Task;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.Id;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * FlagVO
@@ -31,6 +35,11 @@ public class FlagVO {
      * {@link edu.nju.flag.base.enums.FlagType}
      */
     private Integer type;
+
+    /**
+     * 创建用户
+     */
+    private UserVO user;
 
     /**
      * 是否允许加入
@@ -91,6 +100,16 @@ public class FlagVO {
      *
      */
     private List<TaskVO> tasks;
+
+
+    public FlagVO(Flag flag){
+
+        BeanUtils.copyProperties(flag, this, "tasks", "userId");
+        if(!CollectionUtils.isEmpty(flag.getTasks())){
+            this.tasks = flag.getTasks().stream().map(TaskVO::new).collect(Collectors.toList());
+        }
+
+    }
 
 
 

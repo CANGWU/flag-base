@@ -11,53 +11,53 @@ public interface FlagMemberService {
     /**
      * 关注一个flag
      * @param userId
-     * @param flag
+     * @param flagId
      * @return
      */
-    Mono<Boolean> followFlag(String userId, String flag);
+    Mono<Boolean> followFlag(String userId, String flagId);
 
     /**
      * 给flag点赞
      * @param userId
-     * @param flag
+     * @param flagId
      * @return
      */
-    Mono<Boolean> praiseFlag(String userId, String flag);
+    Mono<Boolean> praiseFlag(String userId, String flagId);
 
 
     /**
      * 参与一个flag
      * @param userId
-     * @param flag
+     * @param flagId
      * @return
      */
-    Mono<Boolean> joinFlag(String userId, String flag);
+    Mono<Boolean> joinFlag(String userId, String flagId);
 
 
     /**
      * 取注一个flag
      * @param userId
-     * @param flag
+     * @param flagId
      * @return
      */
-    Mono<Boolean> breakFlag(String userId, String flag);
+    Mono<Boolean> breakFlag(String userId, String flagId);
 
     /**
      * 给flag取消点赞
      * @param userId
-     * @param flag
+     * @param flagId
      * @return
      */
-    Mono<Boolean> dispraiseFlag(String userId, String flag);
+    Mono<Boolean> dispraiseFlag(String userId, String flagId);
 
 
     /**
      * 退出一个flag
      * @param userId
-     * @param flag
+     * @param flagId
      * @return
      */
-    Mono<Boolean> leaveFlag(String userId, String flag);
+    Mono<Boolean> leaveFlag(String userId, String flagId);
 
 
 }

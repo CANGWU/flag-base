@@ -1,26 +1,25 @@
-package edu.nju.flag.base.form;
+package edu.nju.flag.base.vo;
 
+import edu.nju.flag.base.form.PageableForm;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.context.annotation.Bean;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Sort;
 
 /**
- * MyPageable
+ * PageableVO
  *
  * @author xuan
- * @date 2018/12/10
+ * @date 2018/12/12
  */
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Pageable{
-
+public class PageableVO {
 
     private Integer pageSize;
 
@@ -28,4 +27,7 @@ public class Pageable{
 
     private Sort sort;
 
+    public PageableVO(PageableForm pageableForm){
+        BeanUtils.copyProperties(pageableForm, this);
+    }
 }

@@ -6,7 +6,9 @@ import edu.nju.flag.base.form.PageableForm;
 import edu.nju.flag.base.service.CommentService;
 import edu.nju.flag.base.utils.OvalValidatorUtils;
 import edu.nju.flag.base.vo.CommentVO;
+import edu.nju.flag.base.vo.FlagDetailVO;
 import edu.nju.flag.base.vo.PageableVO;
+import io.swagger.annotations.ApiOperation;
 import net.sf.oval.ConstraintViolation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -34,6 +36,7 @@ public class ReactiveCommentController {
 
 
     @PostMapping("/add")
+    @ApiOperation(value = "添加新的评论", response = CommentVO.class)
     public Mono<CommentVO> addComment(@RequestHeader(USER_ID_IN_HEADER)String userId, @RequestBody AddCommentForm addCommentForm){
 
         List<ConstraintViolation> ret = OvalValidatorUtils.validate(addCommentForm);
@@ -45,12 +48,14 @@ public class ReactiveCommentController {
 
 
     @DeleteMapping("/delete/{commentId}")
+    @ApiOperation(value = "删除评论", response = Boolean.class)
     public Mono<Boolean> deleteComment(@RequestHeader(USER_ID_IN_HEADER) String userId, @PathVariable("commentId") String commentId){
         return commentService.deleteComment(userId, commentId);
     }
 
 
     @PostMapping("/list/{flagId}")
+    @ApiOperation(value = "分页获取flag下的评论", response = CommentVO.class)
     public Mono<Page<CommentVO>> queryPageCommentByFlagId(@PathVariable("flagId") String flagId, @RequestBody PageableForm pageable){
         return commentService.queryPageCommentByFlagId(flagId, new PageableVO(pageable));
 

@@ -1,6 +1,7 @@
 package edu.nju.flag.base.service;
 
 import edu.nju.flag.base.vo.CreateTaskVO;
+import edu.nju.flag.base.vo.TaskVO;
 import reactor.core.publisher.Mono;
 
 /**
@@ -37,7 +38,7 @@ public interface TaskService {
      * @param newTask
      * @return
      */
-    Mono<Boolean> createTask(String userId, String flagId, CreateTaskVO newTask);
+    Mono<TaskVO> createTask(String userId, String flagId, CreateTaskVO newTask);
 
     /**
      * 删除一个任务

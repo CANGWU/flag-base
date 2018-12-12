@@ -9,6 +9,7 @@ import edu.nju.flag.base.repository.FlagMemberRelationRepository;
 import edu.nju.flag.base.repository.FlagRepository;
 import edu.nju.flag.base.service.TaskService;
 import edu.nju.flag.base.vo.CreateTaskVO;
+import edu.nju.flag.base.vo.TaskVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -125,7 +126,7 @@ public class ReactiveTaskServiceImpl implements TaskService{
 
 
     @Override
-    public Mono<Boolean> createTask(String userId, String flagId, CreateTaskVO newTask) {
+    public Mono<TaskVO> createTask(String userId, String flagId, CreateTaskVO newTask) {
 
         Optional<Flag> flagOptional = flagRepository.findById(flagId);
         if(!flagOptional.isPresent()){
@@ -153,7 +154,7 @@ public class ReactiveTaskServiceImpl implements TaskService{
 
         flagRepository.save(flag);
 
-        return Mono.just(Boolean.TRUE);
+        return Mono.just(new TaskVO(task));
     }
 
     @Override

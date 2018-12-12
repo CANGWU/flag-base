@@ -1,36 +1,35 @@
-package edu.nju.flag.base.vo;
+package edu.nju.flag.base.form;
 
-import edu.nju.flag.base.form.CreateTaskForm;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.BeanUtils;
+import net.sf.oval.constraint.NotBlank;
+import net.sf.oval.constraint.NotNull;
 
 /**
  * @author xuan
- * @create 2018-12-11 21:05
+ * @create 2018-12-12 23:01
  **/
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateTaskVO {
+public class CreateTaskForm {
+
 
     /**
      * 任务描述
      */
+    @NotBlank
     String description;
 
     /**
      * 任务类型
      * {@link edu.nju.flag.base.enums.TaskType}
      */
+    @NotNull
     private Integer type;
 
-
-    public CreateTaskVO(CreateTaskForm createTaskForm) {
-
-        BeanUtils.copyProperties(createTaskForm, this);
-    }
 }

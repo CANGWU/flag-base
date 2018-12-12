@@ -29,5 +29,11 @@ public class PageableVO {
 
     public PageableVO(PageableForm pageableForm){
         BeanUtils.copyProperties(pageableForm, this);
+        if(this.pageSize == null){
+            this.pageSize = 20;
+        }
+        if(this.pageNumber == null){
+            this.pageSize = 0;
+        }
     }
 }

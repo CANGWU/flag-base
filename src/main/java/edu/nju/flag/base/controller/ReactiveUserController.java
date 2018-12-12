@@ -24,7 +24,7 @@ public class ReactiveUserController {
     UserService userService;
 
 
-    @PostMapping("register")
+    @PostMapping("/register")
     public Mono<UserVO> register(@RequestBody String code){
         return userService.register(code);
     }

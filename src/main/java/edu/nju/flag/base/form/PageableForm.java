@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.sf.oval.constraint.NotNull;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -22,8 +23,10 @@ import org.springframework.data.domain.Sort;
 public class PageableForm{
 
 
+    @NotNull
     private Integer pageSize;
 
+    @NotNull
     private Integer pageNumber;
 
     private Sort sort;

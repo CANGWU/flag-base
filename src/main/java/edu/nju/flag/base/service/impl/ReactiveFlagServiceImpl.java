@@ -179,4 +179,9 @@ public class ReactiveFlagServiceImpl implements FlagService{
         return Mono.just(Boolean.TRUE);
 
     }
+
+    @Override
+    public Mono<Page<FlagVO>> queryMyFlag(String userId, PageableVO pageable) {
+        return Mono.justOrEmpty(flagRepository.findFlagsByUserId(userId, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize())).map(FlagVO::new));
+    }
 }

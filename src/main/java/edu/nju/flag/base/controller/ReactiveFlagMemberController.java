@@ -2,15 +2,19 @@ package edu.nju.flag.base.controller;
 
 import com.alibaba.fastjson.JSON;
 import edu.nju.flag.base.form.CreateFlagForm;
+import edu.nju.flag.base.form.PageableForm;
 import edu.nju.flag.base.service.FlagMemberService;
 import edu.nju.flag.base.service.FlagService;
 import edu.nju.flag.base.utils.OvalValidatorUtils;
 import edu.nju.flag.base.vo.CreateFlagVO;
 import edu.nju.flag.base.vo.FlagDetailVO;
+import edu.nju.flag.base.vo.PageableVO;
+import edu.nju.flag.base.vo.UserVO;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.oval.ConstraintViolation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
@@ -68,6 +72,14 @@ public class ReactiveFlagMemberController {
         }
 
     }
+
+    @GetMapping("/member")
+    @ApiOperation(value = "参看flag参与者", response = UserVO.class)
+    public Mono<Page<UserVO>> queryFlagMember(@RequestParam String flagId, @RequestBody PageableForm pageableForm){
+
+        return flagMemberService.queryFlagMember(flagId, new PageableVO(pageableForm));
+    }
+
 
 
 

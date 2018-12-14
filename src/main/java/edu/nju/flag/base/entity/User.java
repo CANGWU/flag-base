@@ -26,4 +26,9 @@ public class User {
      */
     private String username;
 
+    /**
+     * 用户头像
+     */
+    private String avatar;
+
 }

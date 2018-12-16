@@ -1,5 +1,8 @@
 package edu.nju.flag.base.service;
 
+import edu.nju.flag.base.vo.PageableVO;
+import edu.nju.flag.base.vo.UserVO;
+import org.springframework.data.domain.Page;
 import reactor.core.publisher.Mono;
 
 /**
@@ -60,4 +63,11 @@ public interface FlagMemberService {
     Mono<Boolean> leaveFlag(String userId, String flagId);
 
 
+    /**
+     * 获取flag的参与者
+     * @param flagId
+     * @param pageable
+     * @return
+     */
+    Mono<Page<UserVO>> queryFlagMember(String flagId, PageableVO pageable);
 }

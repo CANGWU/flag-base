@@ -23,6 +23,15 @@ public interface FlagRepository extends PagingAndSortingRepository<Flag, String>
     Page<Flag> findFlagsByTitleIsLike(String title, Pageable pageable);
 
 
+    /**
+     * 获取我创建的flag
+     * @param userId
+     * @param pageable
+     * @return
+     */
+    Page<Flag> findFlagsByUserId(String userId, Pageable pageable);
+
+
 
 
 }

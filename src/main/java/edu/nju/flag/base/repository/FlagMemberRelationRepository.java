@@ -75,4 +75,15 @@ public interface FlagMemberRelationRepository extends PagingAndSortingRepository
      */
     Page<FlagMemberRelation> findFlagMemberRelationsByUserIdAndIsJoin(String userId, Boolean isJoin, Pageable pageable);
 
+
+    /**
+     * 分页获取flag的参与者
+     * @param flagId
+     * @param isJoin
+     * @param pageable
+     * @return
+     */
+    Page<FlagMemberRelation> findFlagMemberRelationsByFlagIdAndIsJoin(String flagId, Boolean isJoin, Pageable pageable);
+
+
 }

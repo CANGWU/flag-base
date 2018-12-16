@@ -37,11 +37,6 @@ public class FlagVO {
     private Integer type;
 
     /**
-     * 创建用户
-     */
-    private UserVO user;
-
-    /**
      * 是否允许加入
      */
     private Boolean isPermitJoin;

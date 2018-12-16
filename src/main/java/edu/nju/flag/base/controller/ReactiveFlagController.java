@@ -53,10 +53,16 @@ public class ReactiveFlagController {
 
     }
 
+    @PostMapping("/my")
+    @ApiOperation(value = "分页获取我创建的flag", response = FlagVO.class)
+    public Mono<Page<FlagVO>> queryMyFlag(@RequestHeader(USER_ID_IN_HEADER)String userId, @RequestBody PageableForm pageableForm){
+        return flagService.queryMyFlag(userId, new PageableVO(pageableForm));
+    }
+
 
     @PostMapping("/popular")
     @ApiOperation(value = "分页获取热门flag", response = FlagVO.class)
-    public Mono<Page<FlagVO>> queryPopularFlag(@RequestParam String title, @RequestBody PageableForm pageableForm){
+    public Mono<Page<FlagVO>> queryPopularFlag(@RequestBody PageableForm pageableForm){
 
         return flagService.queryPopularFlag(new PageableVO(pageableForm));
 
@@ -93,6 +99,9 @@ public class ReactiveFlagController {
     public Mono<FlagDetailVO> getFlagDetail(@RequestHeader(USER_ID_IN_HEADER)String userId, @RequestParam String flagId){
         return flagService.queryFlagById(userId, flagId);
     }
+
+
+
 
     @PostMapping("/close")
     @ApiOperation(value = "结束一个flag", response = Boolean.class)

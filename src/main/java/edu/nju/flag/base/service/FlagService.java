@@ -90,6 +90,11 @@ public interface FlagService {
     Mono<Boolean> removeFlag(String flag);
 
 
-
-
+    /**
+     * 获取我创建的flag
+     * @param userId
+     * @param pageableVO
+     * @return
+     */
+    Mono<Page<FlagVO>> queryMyFlag(String userId, PageableVO pageableVO);
 }

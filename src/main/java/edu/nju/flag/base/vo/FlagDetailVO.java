@@ -10,10 +10,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.util.CollectionUtils;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -28,8 +25,25 @@ public class FlagDetailVO {
 
     private String id;
 
+    /**
+     * 是否创建者
+     */
+    private Boolean isCreator;
 
-    private UserVO user;
+    /**
+     * 是否关注
+     */
+    private Boolean isFollow;
+
+    /**
+     * 是否参与
+     */
+    private Boolean isJoin;
+
+    /**
+     * 是否点赞
+     */
+    private Boolean isPraise;
 
     /**
      * flag类型
@@ -93,12 +107,11 @@ public class FlagDetailVO {
     private Integer followNum;
 
     /**
-     *
+     * 任务详情
      */
     private List<TaskDetailVO> tasks;
 
     public FlagDetailVO(Flag flag, FlagMemberRelation flagMemberRelation) {
-
 
         BeanUtils.copyProperties(flag, this, "tasks", "userId");
 
@@ -107,6 +120,11 @@ public class FlagDetailVO {
         }
 
         if(flagMemberRelation != null && flagMemberRelation.getIsJoin()){
+
+            this.isCreator = Objects.equals(flagMemberRelation.getUserId(), flag.getUserId());
+            isFollow = flagMemberRelation.getIsFollow();
+            isJoin = flagMemberRelation.getIsJoin();
+            isPraise = flagMemberRelation.getIsPraise();
 
             List<TaskStatus> taskStatuses = flagMemberRelation.getMyTaskStatus();
 
@@ -121,7 +139,12 @@ public class FlagDetailVO {
                 taskDetail.setTaskStatus(taskStatusVO);
             }
 
+        }else {
 
+            isCreator = Boolean.FALSE;
+            isFollow = Boolean.FALSE;
+            isJoin = Boolean.FALSE;
+            isPraise = Boolean.FALSE;
 
         }
     }

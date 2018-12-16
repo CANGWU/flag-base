@@ -1,6 +1,6 @@
-package edu.nju.flag.base.entity;
+package edu.nju.flag.base.vo;
 
-import edu.nju.flag.base.vo.CreateTaskVO;
+import edu.nju.flag.base.entity.Task;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,19 +8,16 @@ import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
 
 import java.util.Date;
-import java.util.UUID;
 
 /**
- * Task
- *
  * @author xuan
- * @date 2018/12/10
- */
+ * @create 2018-12-11 20:08
+ **/
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Task {
+public class TaskVO {
 
     private String id;
     /**
@@ -40,11 +37,8 @@ public class Task {
      */
     private Date createTime;
 
-
-    public Task(CreateTaskVO newTask) {
-        BeanUtils.copyProperties(newTask, this);
-        this.id = UUID.randomUUID().toString();
-        this.createTime = new Date();
-
+    public TaskVO(Task task){
+        BeanUtils.copyProperties(task, this);
     }
+
 }

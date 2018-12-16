@@ -34,7 +34,6 @@ public class CreateFlagForm {
     @NotBlank
     private String description;
 
-    @NotNull
     private Date startTime;
 
     @NotEmpty

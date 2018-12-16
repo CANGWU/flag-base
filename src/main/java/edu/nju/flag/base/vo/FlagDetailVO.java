@@ -117,6 +117,8 @@ public class FlagDetailVO {
 
         if(!CollectionUtils.isEmpty(flag.getTasks())){
             this.tasks = flag.getTasks().stream().map(TaskDetailVO::new).collect(Collectors.toList());
+        }else {
+            this.tasks = new ArrayList<>();
         }
 
         if(flagMemberRelation != null && flagMemberRelation.getIsJoin()){

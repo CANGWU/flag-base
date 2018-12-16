@@ -1,31 +1,33 @@
-package edu.nju.flag.base.vo;
+package edu.nju.flag.base.form;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.UUID;
+import net.sf.oval.constraint.NotEmpty;
 
 /**
- * UserVO
+ * RegisterForm
  *
  * @author xuan
- * @date 2018/12/10
+ * @date 2018/12/14
  */
 
-@Data
+
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserVO {
+@Data
+public class RegisterForm {
 
-    private String id;
 
+    @NotEmpty
+    private String code;
+
+    @NotEmpty
     private String username;
 
+    @NotEmpty
     private String avatar;
-
-
 
 }

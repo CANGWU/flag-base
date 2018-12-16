@@ -26,4 +26,25 @@ public class User {
      */
     private String username;
 
+    /**
+     * 用户头像
+     */
+    private String avatar;
+
+    /**
+     * 用户唯一标识
+     */
+    private String openId;
+
+    /**
+     * 用户在开放平台的唯一标识符
+     */
+    private String unionId;
+
+    /**
+     * 会话密钥
+     */
+    private String sessionKey;
+
+
 }

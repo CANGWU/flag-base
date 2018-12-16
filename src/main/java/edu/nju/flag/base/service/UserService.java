@@ -15,9 +15,11 @@ public interface UserService {
     /**
      * 注册用户
      * @param code
+     * @param username
+     * @param avatar
      * @return
      */
-    Mono<UserVO> register(String code);
+    Mono<UserVO> register(String code, String username, String avatar);
 
     /**
      * 删除一个用户，管理员使用

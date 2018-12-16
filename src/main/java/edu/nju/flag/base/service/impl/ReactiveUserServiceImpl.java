@@ -22,7 +22,7 @@ public class ReactiveUserServiceImpl implements UserService{
     UserRepository userRepository;
 
     @Override
-    public Mono<UserVO> register(String code) {
+    public Mono<UserVO> register(String code,  String username, String avatar) {
         return null;
     }
 

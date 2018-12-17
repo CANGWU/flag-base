@@ -1,7 +1,11 @@
 
 
 server:
-  port: 8080
+  port: 443
+  ssl:
+    key-store: classpath:1616293_cangwu.art.pfx
+    key-store-type: PKCS12
+    key-store-password: 7tAharMC
 spring:
   application:
     name: flag-base

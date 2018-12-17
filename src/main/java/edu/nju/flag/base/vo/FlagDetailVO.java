@@ -30,6 +30,8 @@ public class FlagDetailVO {
      */
     private Boolean isCreator;
 
+    private UserVO creator;
+
     /**
      * 是否关注
      */
@@ -111,9 +113,11 @@ public class FlagDetailVO {
      */
     private List<TaskDetailVO> tasks;
 
-    public FlagDetailVO(Flag flag, FlagMemberRelation flagMemberRelation) {
+    public FlagDetailVO(Flag flag, FlagMemberRelation flagMemberRelation, UserVO creator) {
 
         BeanUtils.copyProperties(flag, this, "tasks", "userId");
+
+        this.creator = creator;
 
         if(!CollectionUtils.isEmpty(flag.getTasks())){
             this.tasks = flag.getTasks().stream().map(TaskDetailVO::new).collect(Collectors.toList());

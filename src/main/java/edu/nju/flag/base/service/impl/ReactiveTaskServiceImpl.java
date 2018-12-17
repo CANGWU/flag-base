@@ -54,10 +54,6 @@ public class ReactiveTaskServiceImpl implements TaskService{
     private Mono<Boolean> modifyTaskStatus(String userId, String flagId, String taskId, edu.nju.flag.base.enums.TaskStatus taskStatusEnum){
 
 
-
-
-
-
         Optional<Flag> flagOptional = flagRepository.findById(flagId);
         if(!flagOptional.isPresent()){
             log.error("flag {} is not exist");

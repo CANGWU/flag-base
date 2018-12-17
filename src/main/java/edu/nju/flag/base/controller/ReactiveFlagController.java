@@ -1,10 +1,7 @@
 package edu.nju.flag.base.controller;
 
 import com.alibaba.fastjson.JSON;
-import edu.nju.flag.base.form.AddCommentForm;
-import edu.nju.flag.base.form.CloseFlagForm;
-import edu.nju.flag.base.form.CreateFlagForm;
-import edu.nju.flag.base.form.PageableForm;
+import edu.nju.flag.base.form.*;
 import edu.nju.flag.base.service.FlagService;
 import edu.nju.flag.base.utils.OvalValidatorUtils;
 import edu.nju.flag.base.vo.*;
@@ -44,6 +41,18 @@ public class ReactiveFlagController {
         }
         return flagService.createFlag(userId, new CreateFlagVO(newFlag));
     }
+
+    @PostMapping("/save/{flagId}")
+    @ApiOperation(value = "修改flag", response = FlagDetailVO.class)
+    public Mono<FlagDetailVO> saveFlag(@RequestHeader(USER_ID_IN_HEADER)String userId, @PathVariable("flagId") String flagId, @RequestBody SaveFlagForm saveFlag){
+
+        List<ConstraintViolation> ret = OvalValidatorUtils.validate(saveFlag);
+        if(!CollectionUtils.isEmpty(ret)){
+            return Mono.error(new RuntimeException(JSON.toJSONString(ret)));
+        }
+        return flagService.saveFlag(userId, flagId, new SaveFlagVO(saveFlag));
+    }
+
 
     @PostMapping("/search/title")
     @ApiOperation(value = "分页根据title模糊搜索flag", response = FlagVO.class)

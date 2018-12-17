@@ -3,19 +3,19 @@ package edu.nju.flag.base.service.impl;
 import edu.nju.flag.base.entity.Flag;
 import edu.nju.flag.base.entity.FlagMemberRelation;
 import edu.nju.flag.base.entity.Task;
+import edu.nju.flag.base.entity.User;
 import edu.nju.flag.base.enums.FlagStatus;
 import edu.nju.flag.base.repository.FlagMemberRelationRepository;
 import edu.nju.flag.base.repository.FlagRepository;
 import edu.nju.flag.base.service.FlagMemberService;
 import edu.nju.flag.base.service.FlagService;
-import edu.nju.flag.base.vo.CreateFlagVO;
-import edu.nju.flag.base.vo.FlagDetailVO;
-import edu.nju.flag.base.vo.FlagVO;
-import edu.nju.flag.base.vo.PageableVO;
+import edu.nju.flag.base.vo.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import reactor.core.publisher.Mono;
 
 import java.util.*;
@@ -187,4 +187,44 @@ public class ReactiveFlagServiceImpl implements FlagService{
     public Mono<Page<FlagVO>> queryMyFlag(String userId, PageableVO pageable) {
         return Mono.justOrEmpty(flagRepository.findFlagsByUserId(userId, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize())).map(FlagVO::new));
     }
+
+    @Override
+    public Mono<FlagDetailVO> saveFlag(String userId, String flagId, SaveFlagVO saveFlagVO) {
+        Optional<Flag> flagOptional = flagRepository.findById(flagId);
+
+        if(!flagOptional.isPresent()){
+            log.error("flag {} is not exist");
+            return Mono.error(new RuntimeException("Not such flag!"));
+        }
+
+        Flag flag = flagOptional.get();
+
+        if(!Objects.equals(flag.getUserId(), userId)){
+            log.error("user {} can not operate flag {}!", userId, flagId);
+            return Mono.error(new RuntimeException("Not permit!"));
+        }
+
+        if(saveFlagVO.getIsPermitJoin() != null){
+            flag.setIsPermitJoin(saveFlagVO.getIsPermitJoin());
+        }
+
+        if(saveFlagVO.getType() != null){
+            flag.setType(saveFlagVO.getType());
+        }
+
+        if(!StringUtils.isEmpty(saveFlagVO.getDescription())){
+            flag.setDescription(saveFlagVO.getDescription());
+        }
+
+        if(!StringUtils.isEmpty(saveFlagVO.getTitle())){
+            flag.setTitle(saveFlagVO.getTitle());
+        }
+
+        flagRepository.save(flag);
+        FlagMemberRelation flagMember = flagMemberRelationRepository.findFlagMemberRelationByFlagIdAndUserId(flagId, userId);
+
+        return Mono.justOrEmpty(new FlagDetailVO(flag, flagMember));
+    }
+
+
 }

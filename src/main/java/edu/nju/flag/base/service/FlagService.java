@@ -1,9 +1,6 @@
 package edu.nju.flag.base.service;
 
-import edu.nju.flag.base.vo.CreateFlagVO;
-import edu.nju.flag.base.vo.FlagDetailVO;
-import edu.nju.flag.base.vo.FlagVO;
-import edu.nju.flag.base.vo.PageableVO;
+import edu.nju.flag.base.vo.*;
 import org.springframework.data.domain.Page;
 import reactor.core.publisher.Mono;
 
@@ -97,4 +94,13 @@ public interface FlagService {
      * @return
      */
     Mono<Page<FlagVO>> queryMyFlag(String userId, PageableVO pageableVO);
+
+    /**
+     * 修改flag
+     * @param userId
+     * @param flagId
+     * @param saveFlagVO
+     * @return
+     */
+    Mono<FlagDetailVO> saveFlag(String userId, String flagId, SaveFlagVO saveFlagVO);
 }

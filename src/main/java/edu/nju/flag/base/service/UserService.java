@@ -19,7 +19,7 @@ public interface UserService {
      * @param avatar
      * @return
      */
-    Mono<UserVO> register(String code, String username, String avatar);
+    Mono<UserVO> login(String code, String username, String avatar);
 
     /**
      * 删除一个用户，管理员使用

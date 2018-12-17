@@ -31,9 +31,10 @@ public interface CommentService {
      * 删除评论
      * @param userId
      * @param commentId
+     * @param flagId
      * @return
      */
-    Mono<Boolean> deleteComment(String userId, String commentId);
+    Mono<Boolean> deleteComment(String userId, String flagId, String commentId);
 
 
     /**

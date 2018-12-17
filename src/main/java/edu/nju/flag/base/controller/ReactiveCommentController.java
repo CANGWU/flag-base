@@ -35,22 +35,22 @@ public class ReactiveCommentController {
     CommentService commentService;
 
 
-    @PostMapping("/add")
+    @PostMapping("/add/{flagId}")
     @ApiOperation(value = "添加新的评论", response = CommentVO.class)
-    public Mono<CommentVO> addComment(@RequestHeader(USER_ID_IN_HEADER)String userId, @RequestBody AddCommentForm addCommentForm){
+    public Mono<CommentVO> addComment(@RequestHeader(USER_ID_IN_HEADER)String userId, @PathVariable("flagId") String flagId, @RequestBody AddCommentForm addCommentForm){
 
         List<ConstraintViolation> ret = OvalValidatorUtils.validate(addCommentForm);
         if(!CollectionUtils.isEmpty(ret)){
             return Mono.error(new RuntimeException(JSON.toJSONString(ret)));
         }
-        return commentService.addComment(userId, addCommentForm.getFlagId(), addCommentForm.getContent(), addCommentForm.getToCommentId());
+        return commentService.addComment(userId, flagId, addCommentForm.getContent(), addCommentForm.getToCommentId());
     }
 
 
-    @DeleteMapping("/delete/{commentId}")
+    @DeleteMapping("/delete/{flagId}/{commentId}")
     @ApiOperation(value = "删除评论", response = Boolean.class)
-    public Mono<Boolean> deleteComment(@RequestHeader(USER_ID_IN_HEADER) String userId, @PathVariable("commentId") String commentId){
-        return commentService.deleteComment(userId, commentId);
+    public Mono<Boolean> deleteComment(@RequestHeader(USER_ID_IN_HEADER) String userId, @PathVariable("flagId") String flagId, @PathVariable("commentId") String commentId){
+        return commentService.deleteComment(userId, flagId, commentId);
     }
 
 

@@ -25,8 +25,6 @@ public class AddCommentForm {
     @NotBlank
     private String content;
 
-    @NotNull
-    private String flagId;
 
     private String toCommentId;
 

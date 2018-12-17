@@ -13,10 +13,6 @@ import net.sf.oval.constraint.NotBlank;
 @NoArgsConstructor
 public class CloseFlagForm {
 
-
-    @NotBlank
-    private String flagId;
-
     @NonNull
     private Integer flagStatus;
 }

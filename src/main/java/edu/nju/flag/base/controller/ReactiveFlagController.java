@@ -59,7 +59,6 @@ public class ReactiveFlagController {
         return flagService.queryMyFlag(userId, new PageableVO(pageableForm));
     }
 
-
     @PostMapping("/popular")
     @ApiOperation(value = "分页获取热门flag", response = FlagVO.class)
     public Mono<Page<FlagVO>> queryPopularFlag(@RequestBody PageableForm pageableForm){
@@ -67,7 +66,6 @@ public class ReactiveFlagController {
         return flagService.queryPopularFlag(new PageableVO(pageableForm));
 
     }
-
 
     @PostMapping("/praised")
     @ApiOperation(value = "分页获取我点赞的flag", response = FlagVO.class)
@@ -77,7 +75,6 @@ public class ReactiveFlagController {
 
     }
 
-
     @PostMapping("/joined")
     @ApiOperation(value = "分页获取我参与的flag", response = FlagVO.class)
     public Mono<Page<FlagVO>> queryJoinedFlag(@RequestHeader(USER_ID_IN_HEADER)String userId, @RequestBody PageableForm pageableForm){
@@ -86,32 +83,22 @@ public class ReactiveFlagController {
 
     }
 
-
     @PostMapping("/followed")
     @ApiOperation(value = "分页获取我关注的flag", response = FlagVO.class)
     public Mono<Page<FlagVO>> queryFollowedFlag(@RequestHeader(USER_ID_IN_HEADER)String userId, @RequestBody PageableForm pageableForm){
         return flagService.queryFollowedFlag(userId, new PageableVO(pageableForm));
     }
 
-
-    @GetMapping("/detail")
+    @GetMapping("/detail/{flagId}")
     @ApiOperation(value = "获取flag的详情", response = FlagDetailVO.class)
-    public Mono<FlagDetailVO> getFlagDetail(@RequestHeader(USER_ID_IN_HEADER)String userId, @RequestParam String flagId){
+    public Mono<FlagDetailVO> getFlagDetail(@RequestHeader(USER_ID_IN_HEADER)String userId, @PathVariable("flagId") String flagId){
         return flagService.queryFlagById(userId, flagId);
     }
 
-
-
-
-    @PostMapping("/close")
+    @PostMapping("/close/{flagId}")
     @ApiOperation(value = "结束一个flag", response = Boolean.class)
-    public Mono<Boolean> closeFlag(@RequestHeader(USER_ID_IN_HEADER)String userId, @RequestBody CloseFlagForm closeFlagForm){
-
-        List<ConstraintViolation> ret = OvalValidatorUtils.validate(closeFlagForm);
-        if(!CollectionUtils.isEmpty(ret)){
-            return Mono.error(new RuntimeException(JSON.toJSONString(ret)));
-        }
-        return flagService.closeFlag(userId, closeFlagForm.getFlagId(), closeFlagForm.getFlagStatus());
+    public Mono<Boolean> closeFlag(@RequestHeader(USER_ID_IN_HEADER)String userId,  @PathVariable("flagId") String flagId, @RequestParam Integer flagStatus){
+        return flagService.closeFlag(userId, flagId, flagStatus);
     }
 
 

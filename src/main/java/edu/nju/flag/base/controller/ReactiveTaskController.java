@@ -35,24 +35,24 @@ public class ReactiveTaskController {
 
 
 
-    @PostMapping("/complete")
+    @PostMapping("/complete/{flagId}/{taskId}")
     @ApiOperation(value = "完成一项任务", response = Boolean.class)
-    public Mono<Boolean> completeTask(@RequestHeader(USER_ID_IN_HEADER)String userId, @RequestParam String flagId, @RequestParam String taskId){
+    public Mono<Boolean> completeTask(@RequestHeader(USER_ID_IN_HEADER)String userId, @PathVariable("flagId") String flagId, @PathVariable("taskId") String taskId){
 
         return taskService.completeTask(userId, flagId, taskId);
     }
 
-    @PostMapping("/disable")
+    @PostMapping("/disable/{flagId}/{taskId}")
     @ApiOperation(value = "失败一项任务", response = Boolean.class)
-    public Mono<Boolean> disableTask(@RequestHeader(USER_ID_IN_HEADER)String userId, @RequestParam String flagId, @RequestParam String taskId){
+    public Mono<Boolean> disableTask(@RequestHeader(USER_ID_IN_HEADER)String userId, @PathVariable("flagId") String flagId, @PathVariable("taskId") String taskId){
 
         return taskService.disableTask(userId, flagId, taskId);
     }
 
 
-    @PostMapping("/create")
+    @PostMapping("/create/{flagId}")
     @ApiOperation(value = "创建一个新的任务", response = TaskVO.class)
-    public Mono<TaskVO> createFlag(@RequestHeader(USER_ID_IN_HEADER)String userId, @RequestParam String flagId, @RequestBody CreateTaskForm newTask){
+    public Mono<TaskVO> createFlag(@RequestHeader(USER_ID_IN_HEADER)String userId, @PathVariable("flagId") String flagId, @RequestBody CreateTaskForm newTask){
         List<ConstraintViolation> ret = OvalValidatorUtils.validate(newTask);
         if(!CollectionUtils.isEmpty(ret)){
             return Mono.error(new RuntimeException(JSON.toJSONString(ret)));
@@ -61,9 +61,9 @@ public class ReactiveTaskController {
     }
 
 
-    @PostMapping("/delete")
+    @PostMapping("/delete/{flagId}/{taskId}")
     @ApiOperation(value = "删除一个任务", response = TaskVO.class)
-    public Mono<Boolean> removeFlag(@RequestHeader(USER_ID_IN_HEADER)String userId, @RequestParam String flagId, @RequestParam String taskId){
+    public Mono<Boolean> removeFlag(@RequestHeader(USER_ID_IN_HEADER)String userId, @PathVariable("flagId") String flagId, @PathVariable("taskId") String taskId){
         return taskService.removeTask(userId, flagId, taskId);
     }
 }

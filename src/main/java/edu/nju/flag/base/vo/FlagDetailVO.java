@@ -121,24 +121,27 @@ public class FlagDetailVO {
             this.tasks = new ArrayList<>();
         }
 
-        if(flagMemberRelation != null && flagMemberRelation.getIsJoin()){
+        if(flagMemberRelation != null){
 
             this.isCreator = Objects.equals(flagMemberRelation.getUserId(), flag.getUserId());
             isFollow = flagMemberRelation.getIsFollow();
             isJoin = flagMemberRelation.getIsJoin();
             isPraise = flagMemberRelation.getIsPraise();
 
-            List<TaskStatus> taskStatuses = flagMemberRelation.getMyTaskStatus();
+            if(flagMemberRelation.getIsJoin()) {
 
-            Map<String, TaskStatus> taskStatusMap = taskStatuses == null ? new HashMap<>() : taskStatuses.stream().collect(Collectors.toMap(TaskStatus::getTaskId, i -> i));
+                List<TaskStatus> taskStatuses = flagMemberRelation.getMyTaskStatus();
 
-            for(TaskDetailVO taskDetail : this.tasks){
+                Map<String, TaskStatus> taskStatusMap = taskStatuses == null ? new HashMap<>() : taskStatuses.stream().collect(Collectors.toMap(TaskStatus::getTaskId, i -> i));
 
-                TaskStatus taskStatus = taskStatusMap.get(taskDetail.getId());
+                for (TaskDetailVO taskDetail : this.tasks) {
 
-                TaskStatusVO taskStatusVO = taskStatus != null ? new TaskStatusVO(taskStatus) : new TaskStatusVO(taskDetail.getId(), edu.nju.flag.base.enums.TaskStatus.ONGOING.getType(), null);
+                    TaskStatus taskStatus = taskStatusMap.get(taskDetail.getId());
 
-                taskDetail.setTaskStatus(taskStatusVO);
+                    TaskStatusVO taskStatusVO = taskStatus != null ? new TaskStatusVO(taskStatus) : new TaskStatusVO(taskDetail.getId(), edu.nju.flag.base.enums.TaskStatus.ONGOING.getType(), null);
+
+                    taskDetail.setTaskStatus(taskStatusVO);
+                }
             }
 
         }else {

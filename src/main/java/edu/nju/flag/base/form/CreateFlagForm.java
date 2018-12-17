@@ -34,7 +34,8 @@ public class CreateFlagForm {
     @NotBlank
     private String description;
 
-    private Date startTime;
+//    @NotNull
+//    private Date startTime;
 
     @NotEmpty
     private List<CreateTaskForm> tasks;

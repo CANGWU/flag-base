@@ -37,9 +37,9 @@ public class ReactiveFlagMemberController {
     @Autowired
     FlagMemberService flagMemberService;
 
-    @PostMapping("/follow")
+    @PostMapping("/follow/{flagId}")
     @ApiOperation(value = "关注/取关一个flag", response = Boolean.class)
-    public Mono<Boolean> handleFollow(@RequestHeader(USER_ID_IN_HEADER)String userId, @RequestParam String flagId, @RequestParam Boolean des){
+    public Mono<Boolean> handleFollow(@RequestHeader(USER_ID_IN_HEADER)String userId, @PathVariable("flagId") String flagId, @RequestParam Boolean des){
 
         if(des){
             return flagMemberService.followFlag(userId, flagId);
@@ -49,9 +49,9 @@ public class ReactiveFlagMemberController {
 
     }
 
-    @PostMapping("/praise")
+    @PostMapping("/praise/{flagId}")
     @ApiOperation(value = "点赞/取赞一个flag", response = Boolean.class)
-    public Mono<Boolean> handlePrasie(@RequestHeader(USER_ID_IN_HEADER)String userId, @RequestParam String flagId, @RequestParam Boolean des){
+    public Mono<Boolean> handlePraise(@RequestHeader(USER_ID_IN_HEADER)String userId, @PathVariable("flagId") String flagId, @RequestParam Boolean des){
 
         if(des){
             return flagMemberService.praiseFlag(userId, flagId);
@@ -61,9 +61,9 @@ public class ReactiveFlagMemberController {
 
     }
 
-    @PostMapping("/join")
+    @PostMapping("/join/{flagId}")
     @ApiOperation(value = "加入/退出一个flag", response = Boolean.class)
-    public Mono<Boolean> handleJoin(@RequestHeader(USER_ID_IN_HEADER)String userId, @RequestParam String flagId, @RequestParam Boolean des){
+    public Mono<Boolean> handleJoin(@RequestHeader(USER_ID_IN_HEADER)String userId, @PathVariable("flagId") String flagId, @RequestParam Boolean des){
 
         if(des){
             return flagMemberService.joinFlag(userId, flagId);
@@ -73,9 +73,9 @@ public class ReactiveFlagMemberController {
 
     }
 
-    @GetMapping("/member")
+    @PostMapping("/list/{flagId}")
     @ApiOperation(value = "参看flag参与者", response = UserVO.class)
-    public Mono<Page<UserVO>> queryFlagMember(@RequestParam String flagId, @RequestBody PageableForm pageableForm){
+    public Mono<Page<UserVO>> queryFlagMember(@PathVariable("flagId") String flagId, @RequestBody PageableForm pageableForm){
 
         return flagMemberService.queryFlagMember(flagId, new PageableVO(pageableForm));
     }

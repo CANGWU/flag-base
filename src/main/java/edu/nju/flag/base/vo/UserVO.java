@@ -22,6 +22,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class UserVO {
 
+    private String id;
 
     private String username;
 
@@ -31,8 +32,13 @@ public class UserVO {
     public UserVO(User user){
 
         BeanUtils.copyProperties(user, this, "id");
+    }
 
 
+    public UserVO(User user, String id){
+
+        BeanUtils.copyProperties(user, this, "id");
+        this.id = id;
     }
 
 

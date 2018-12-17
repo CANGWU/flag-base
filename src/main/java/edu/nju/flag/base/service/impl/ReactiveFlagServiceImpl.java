@@ -69,6 +69,9 @@ public class ReactiveFlagServiceImpl implements FlagService{
 
         return Mono.justOrEmpty(new FlagDetailVO(flag, FlagMemberRelation.builder()
                 .isJoin(Boolean.TRUE)
+                .isFollow(Boolean.FALSE)
+                .isPraise(Boolean.FALSE)
+                .userId(userId)
                 .build()));
     }
 

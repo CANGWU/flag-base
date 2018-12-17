@@ -5,6 +5,7 @@ import edu.nju.flag.base.form.RegisterForm;
 import edu.nju.flag.base.service.UserService;
 import edu.nju.flag.base.utils.OvalValidatorUtils;
 import edu.nju.flag.base.vo.UserVO;
+import io.swagger.annotations.ApiOperation;
 import net.sf.oval.ConstraintViolation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
@@ -31,14 +32,15 @@ public class ReactiveUserController {
     UserService userService;
 
 
-    @PostMapping("/register")
-    public Mono<UserVO> register(@RequestBody RegisterForm registerForm){
+    @PostMapping("/login")
+    @ApiOperation(value = "用户登录，不存在用户顺便注册", response = UserVO.class)
+    public Mono<UserVO> login(@RequestBody RegisterForm registerForm){
 
         List<ConstraintViolation> ret = OvalValidatorUtils.validate(registerForm);
         if(!CollectionUtils.isEmpty(ret)){
             return Mono.error(new RuntimeException(JSON.toJSONString(ret)));
         }
-        return userService.register(registerForm.getCode(), registerForm.getUsername(), registerForm.getAvatar());
+        return userService.login(registerForm.getCode(), registerForm.getUsername(), registerForm.getAvatar());
     }
 
 

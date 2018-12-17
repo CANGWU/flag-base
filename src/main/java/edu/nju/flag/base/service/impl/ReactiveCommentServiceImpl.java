@@ -64,7 +64,7 @@ public class ReactiveCommentServiceImpl implements CommentService{
     }
 
     @Override
-    public Mono<Boolean> deleteComment(String userId, String commentId) {
+    public Mono<Boolean> deleteComment(String userId, String flagId, String commentId) {
         return Mono.justOrEmpty(commentRepository.deleteCommentByIdAndUserId(commentId, userId) > 0L);
     }
 

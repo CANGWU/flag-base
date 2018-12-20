@@ -7,6 +7,7 @@ import edu.nju.flag.base.entity.User;
 import edu.nju.flag.base.enums.FlagStatus;
 import edu.nju.flag.base.repository.FlagMemberRelationRepository;
 import edu.nju.flag.base.repository.FlagRepository;
+import edu.nju.flag.base.repository.UserRepository;
 import edu.nju.flag.base.service.FlagMemberService;
 import edu.nju.flag.base.service.FlagService;
 import edu.nju.flag.base.vo.*;
@@ -15,6 +16,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import reactor.core.publisher.Mono;
 
@@ -39,6 +41,8 @@ public class ReactiveFlagServiceImpl implements FlagService{
     FlagMemberRelationRepository flagMemberRelationRepository;
     @Autowired
     FlagMemberService flagMemberService;
+    @Autowired
+    UserRepository userRepository;
 
     @Override
     public Mono<FlagDetailVO> createFlag(String userId, CreateFlagVO newFlag) {
@@ -67,22 +71,30 @@ public class ReactiveFlagServiceImpl implements FlagService{
             log.error("user {} join flag {} failed!", userId, flag.getId());
         }
 
+        Optional<User> userOptional = userRepository.findById(flag.getUserId());
+        UserVO userVO = null;
+
+        if(userOptional.isPresent()){
+            userVO = new UserVO(userOptional.get());
+        }
+
         return Mono.justOrEmpty(new FlagDetailVO(flag, FlagMemberRelation.builder()
                 .isJoin(Boolean.TRUE)
                 .isFollow(Boolean.FALSE)
                 .isPraise(Boolean.FALSE)
                 .userId(userId)
-                .build()));
+                .build(), userVO));
     }
 
     @Override
     public Mono<Page<FlagVO>> searchFlagByTitle(String title, PageableVO pageable) {
-        return Mono.justOrEmpty(flagRepository.findFlagsByTitleIsLike(title, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize())).map(FlagVO::new));
+        return Mono.justOrEmpty(generateFlagVOPage(flagRepository.findFlagsByTitleIsLike(title, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()))));
+
     }
 
     @Override
     public Mono<Page<FlagVO>> queryPopularFlag(PageableVO pageable) {
-        return Mono.justOrEmpty(flagRepository.findAll(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Order.desc("memberNum"), Sort.Order.desc("praiseNum"), Sort.Order.desc("createTime")))).map(FlagVO::new));
+        return Mono.justOrEmpty(generateFlagVOPage(flagRepository.findAll(PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(Sort.Order.desc("memberNum"), Sort.Order.desc("praiseNum"), Sort.Order.desc("createTime"))))));
     }
 
     @Override
@@ -95,7 +107,7 @@ public class ReactiveFlagServiceImpl implements FlagService{
 
         List<Flag> flags = (List)flagRepository.findAllById(flagMemberRelations.map(FlagMemberRelation::getFlagId));
 
-        return Mono.justOrEmpty(new PageImpl<>(flags.stream().map(FlagVO::new).collect(Collectors.toList()), p, flagMemberRelations.getTotalElements()));
+        return Mono.justOrEmpty(generateFlagVOPage(new PageImpl<>(flags, p, flagMemberRelations.getTotalElements())));
 
 
     }
@@ -108,7 +120,7 @@ public class ReactiveFlagServiceImpl implements FlagService{
 
         List<Flag> flags = (List)flagRepository.findAllById(flagMemberRelations.map(FlagMemberRelation::getFlagId));
 
-        return Mono.justOrEmpty(new PageImpl<>(flags.stream().map(FlagVO::new).collect(Collectors.toList()), p, flagMemberRelations.getTotalElements()));
+        return Mono.justOrEmpty(generateFlagVOPage(new PageImpl<>(flags, p, flagMemberRelations.getTotalElements())));
     }
 
     @Override
@@ -119,7 +131,7 @@ public class ReactiveFlagServiceImpl implements FlagService{
 
         List<Flag> flags = (List)flagRepository.findAllById(flagMemberRelations.map(FlagMemberRelation::getFlagId));
 
-        return Mono.justOrEmpty(new PageImpl<>(flags.stream().map(FlagVO::new).collect(Collectors.toList()), p, flagMemberRelations.getTotalElements()));
+        return Mono.justOrEmpty(generateFlagVOPage(new PageImpl<>(flags, p, flagMemberRelations.getTotalElements())));
     }
 
     @Override
@@ -136,7 +148,14 @@ public class ReactiveFlagServiceImpl implements FlagService{
 
         FlagMemberRelation flagMemberRelation = flagMemberRelationRepository.findFlagMemberRelationByFlagIdAndUserId(flagId, userId);
 
-        FlagDetailVO flagDetailVO = new FlagDetailVO(flag, flagMemberRelation);
+        Optional<User> userOptional = userRepository.findById(flag.getUserId());
+        UserVO userVO = null;
+
+        if(userOptional.isPresent()){
+            userVO = new UserVO(userOptional.get());
+        }
+
+        FlagDetailVO flagDetailVO = new FlagDetailVO(flag, flagMemberRelation, userVO);
 
 
         return Mono.justOrEmpty(flagDetailVO);
@@ -185,7 +204,7 @@ public class ReactiveFlagServiceImpl implements FlagService{
 
     @Override
     public Mono<Page<FlagVO>> queryMyFlag(String userId, PageableVO pageable) {
-        return Mono.justOrEmpty(flagRepository.findFlagsByUserId(userId, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize())).map(FlagVO::new));
+        return Mono.justOrEmpty(generateFlagVOPage(flagRepository.findFlagsByUserId(userId, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()))));
     }
 
     @Override
@@ -223,7 +242,39 @@ public class ReactiveFlagServiceImpl implements FlagService{
         flagRepository.save(flag);
         FlagMemberRelation flagMember = flagMemberRelationRepository.findFlagMemberRelationByFlagIdAndUserId(flagId, userId);
 
-        return Mono.justOrEmpty(new FlagDetailVO(flag, flagMember));
+        Optional<User> userOptional = userRepository.findById(flag.getUserId());
+        UserVO userVO = null;
+
+        if(userOptional.isPresent()){
+            userVO = new UserVO(userOptional.get());
+        }
+
+        return Mono.justOrEmpty(new FlagDetailVO(flag, flagMember, userVO));
+    }
+
+    private Page<FlagVO> generateFlagVOPage(Page<Flag> flags){
+
+        List<String> userIds = flags.map(Flag::getUserId).stream().distinct().collect(Collectors.toList());
+
+        Map<String, User> userMap = new HashMap<>();
+
+        if(!CollectionUtils.isEmpty(userIds)){
+
+            List<User> users =  (List)userRepository.findAllById(userIds);
+
+            if(!CollectionUtils.isEmpty(users)){
+                userMap = users.stream().collect(Collectors.toMap(User::getId, i -> i, (v1, v2) -> v1));
+            }
+        }
+        Map<String, User> finalUserMap = userMap;
+        return flags.map(i -> {
+            User user = finalUserMap.get(i.getUserId());
+            UserVO userVO = null;
+            if(user != null){
+                userVO = new UserVO(user);
+            }
+            return new FlagVO(i, userVO);
+        });
     }
 
 

@@ -32,9 +32,9 @@ public class CommentVO {
     private String flagId;
 
     /**
-     * 评论人Id
+     * 评论人
      */
-    private String userId;
+    private UserVO creator;
 
     /**
      * 评论时间
@@ -57,8 +57,9 @@ public class CommentVO {
     private String toCommentId;
 
 
-    public CommentVO(Comment comment){
+    public CommentVO(Comment comment, UserVO user){
         BeanUtils.copyProperties(comment, this);
+        this.creator = user;
     }
 
 }

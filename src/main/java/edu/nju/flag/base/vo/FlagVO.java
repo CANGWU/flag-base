@@ -96,13 +96,17 @@ public class FlagVO {
      */
     private List<TaskVO> tasks;
 
+    private UserVO creator;
 
-    public FlagVO(Flag flag){
+
+    public FlagVO(Flag flag, UserVO userVO){
 
         BeanUtils.copyProperties(flag, this, "tasks", "userId");
         if(!CollectionUtils.isEmpty(flag.getTasks())){
             this.tasks = flag.getTasks().stream().map(TaskVO::new).collect(Collectors.toList());
         }
+
+        this.creator = userVO;
 
     }
 
